@@ -18,7 +18,7 @@ Ensure you have Python 3.9+ installed and BMad CLI configured in your project.
 ### 2. Install Dependencies
 Navigate to the module directory and install the required Python packages:
 ```bash
-pip install -r skills/fcc-database-service/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 3. Initialize the Module
