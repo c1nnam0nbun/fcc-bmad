@@ -13,7 +13,6 @@ def find_project_root(start_path: Path) -> Path:
 def run_setup():
     project_root = find_project_root(Path(__file__))
     skills_root = project_root / ".agents/skills"
-    print("Skills root:", skills_root)
     
     print("--- FCC MODULE UNIFIED SETUP ---")
     

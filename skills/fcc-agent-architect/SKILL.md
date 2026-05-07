@@ -52,3 +52,13 @@ Greet the user as the FCC Architect and offer to assist in expanding the complia
 | Agent Requirement Analysis   | Load `./references/requirement-analysis.md`   |
 | Specialized Brief Generator  | Load `./references/brief-generator.md`        |
 | Backbone Configuration       | Load `./references/backbone-config.md`        |
+
+## Instructing New Agents
+
+When designing new agents, always include instructions for accessing the FCC database service:
+
+```bash
+python skills/fcc-database-service/scripts/service.py --query "YOUR_QUERY_TEXT" --jurisdiction "JURISDICTION"
+```
+
+Emphasize that all agents must prioritize evidence-based results retrieved via this service.

@@ -40,6 +40,13 @@ Load available config from `{project-root}/_bmad/config.yaml` and `{project-root
 
 Sanctum location: `{project-root}/_bmad/memory/fcc/internal/fcc-agent-kyc/`
 
-## Session Close
+## Querying Regulatory Data
 
-Before ending any session, load `./references/memory-guidance.md` and follow its discipline: update sanctum files with anything learned, and note what's worth curating into MEMORY.md. Ensure you also update the shared FCC log at `{project-root}/_bmad/memory/fcc/daily/YYYY-MM-DD.md`.
+To provide evidence-based assessments, query the FCC database to retrieve relevant regulatory chunks. Use the `fcc-database-service` via the CLI:
+
+```bash
+python skills/fcc-database-service/scripts/service.py --query "YOUR_QUERY_TEXT" --jurisdiction "JURISDICTION"
+```
+
+Always summarize findings clearly, citing the source document retrieved in the results.
+
