@@ -75,16 +75,18 @@ class FCCDatabase:
         print(f"Success: Added {len(chunks)} chunks from {file_path.name}")
 
     def query(self, query_text: str, jurisdiction: str = None, domain: str = None, n_results: int = 5):
-        where = {}
+        filters = []
         if jurisdiction:
-            where["jurisdiction"] = jurisdiction
+            filters.append({"jurisdiction": jurisdiction})
         if domain:
-            where["domain"] = domain
+            filters.append({"domain": domain})
+
+        where = {"$and": filters} if len(filters) > 1 else (filters[0] if filters else None)
 
         results = self.collection.query(
             query_texts=[query_text],
             n_results=n_results,
-            where=where if where else None
+            where=where
         )
         return results
 
