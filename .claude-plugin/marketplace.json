@@ -1,0 +1,38 @@
+{
+  "name": "Fintech Crypto Compliance (FCC) Module",
+  "version": "1.0.0",
+  "description": "A self-contained, expert-agent suite for AML/CTF and regulatory decision-making in the fintech and crypto space.",
+  "author": "BMad CLI",
+  "license": "MIT",
+  "tags": [
+    "fintech",
+    "crypto",
+    "compliance",
+    "aml",
+    "ctf",
+    "kyc",
+    "regulatory"
+  ],
+  "entry": "skills/fcc-setup/SKILL.md",
+  "requirements": [
+    "python >= 3.9"
+  ],
+  "plugins": [
+    {
+      "name": "fcc-module",
+      "source": "./",
+      "description": "A self-contained, expert-agent suite for AML/CTF and regulatory decision-making in the fintech and crypto space.",
+      "version": "1.0.0",
+      "author": {
+        "name": "BMad CLI"
+      },
+      "skills": [
+        "./skills/fcc-database-service",
+        "./skills/fcc-agent-architect",
+        "./skills/fcc-agent-kyc",
+        "./skills/fcc-consensus-workflow",
+        "./skills/fcc-setup"
+      ]
+    }
+  ]
+}
