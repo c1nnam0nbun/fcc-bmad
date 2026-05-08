@@ -45,7 +45,6 @@ if __name__ == "__main__":
     if args.query:
         results = fcc_db.query(args.query, args.jurisdiction, args.domain, args.n_results)
         print(f"\nQuery Results for: '{args.query}'")
-        print(results)
         if results['documents'] and results['documents'][0]:
             for i, doc in enumerate(results['documents'][0]):
                 meta = results['metadatas'][0][i]

@@ -83,7 +83,6 @@ class FCCDatabase:
             query_texts=[query_text],
             n_results=n_results * 3 # Fetch more to account for post-filtering
         )
-        print(results)
         
         filtered_docs = []
         filtered_ids = []
@@ -93,8 +92,6 @@ class FCCDatabase:
         for i, meta in enumerate(results['metadatas'][0]):
             j_match = True if not jurisdiction else jurisdiction in [j.strip() for j in meta.get("jurisdiction", "").split(",")]
             d_match = True if not domain else domain in [d.strip() for d in meta.get("domain", "").split(",")]
-            
-            print(jurisdiction, j_match, domain, d_match)
             
             if j_match and d_match:
                 filtered_docs.append(results['documents'][0][i])
