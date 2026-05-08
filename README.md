@@ -12,16 +12,33 @@ A self-contained, expert-agent suite for AML/CTF and regulatory decision-making 
 
 ## Installation & Setup
 
-Everything is handled through the BMad CLI. Simply run:
+1. Begin BMad Method interactive installation
+   ```bash
+   mkdir your_project
+   cd your_project
+   npx bmad-method@latest install
+   ```
+2. When asked to select official modules to install, make sure to have **BMad Builder** selected. **It is required for `fcc-agent-architect` to create proper BMad agents.**
+3. When prompted to install custom module select `Yes` and paste link to this repo
+   ```
+   https://github.com/c1nnam0nbun/fcc-bmad
+   ```
+4. Once installed, run `/fcc-setup`
 
-```bash
-/fcc-setup
-```
-
-This command will:
-1.  **Install Dependencies:** Automatically install all required Python packages (`chromadb`, `sentence-transformers`, etc.).
-2.  **Initialize Database:** Set up the local Vector DB and shared memory structures.
-3.  **Configure Agents:** Ensure all agents are aware of the shared backbone.
+Alternatively, you may use non-interactive mode
+1. Run BMad Method non-interactive installation
+   ```bash
+   mkdir your_project
+   cd your_project
+   npx bmad-method@latest install \
+      --directory . \
+      --modules bmm,bmb \
+      --custom-source https://github.com/c1nnam0nbun/fcc-bmad \
+      --tools <tool_names> \
+      --yes
+   ```
+   Substitute `tool_names` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
+2. Once installed, run `/fcc-setup`
 
 ## Usage
 
@@ -39,6 +56,8 @@ Trigger a multi-agent review for a client:
 `--agents` is optional and allows you to specify, which agents should take part in the discussion. All available `fcc-agent-*`s will be used if omitted.
 
 ### Ingesting Documents
+At this moment the suite is able to work with PDF (text, no OCR), DOCX, TXT and MD files. Place files into the directory and pass the directory to the `fcc-database-service`.
+
 ```bash
 /fcc-database-service ingest @docs/, tag them with domains KYC and General
 ```
@@ -50,6 +69,8 @@ python skills/fcc-database-service/scripts/service.py --ingest "./docs/my_regs/"
 ```
 
 All agents have access to `fcc-database-service` skill, so you may also ask specific agent to ingest the documents.
+
+The documents can be tagged with **jurisdiction** (EU, Global, Singapore etc.) and **domain** (KYC, EDD, AML etc.). Multiple of them may be attached, separated by comma. Default values are **Global** for jurisdiction and **General** for domain. When querying, the agents may apply jurisdiction and domain filters as per user's request or their own reasoning.
 
 ## Architecture
 The module uses a **Shared Backbone** pattern:
