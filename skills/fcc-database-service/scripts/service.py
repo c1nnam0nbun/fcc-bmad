@@ -46,7 +46,7 @@ class FCCDatabase:
                 for page in pdf.pages:
                     text += page.extract_text() + "\n"
         elif file_path.suffix.lower() == ".docx":
-            doc = Document(file_path)
+            doc = Document(str(file_path))
             for para in doc.paragraphs:
                 text += para.text + "\n"
         elif file_path.suffix.lower() in [".md", ".txt"]:
@@ -75,27 +75,55 @@ class FCCDatabase:
         print(f"Success: Added {len(chunks)} chunks from {file_path.name}")
 
     def query(self, query_text: str, jurisdiction: str = None, domain: str = None, n_results: int = 5):
-        filters = []
-        if jurisdiction:
-            filters.append({"jurisdiction": jurisdiction})
-        if domain:
-            filters.append({"domain": domain})
-
-        where = {"$and": filters} if len(filters) > 1 else (filters[0] if filters else None)
-
+        # We query the DB and then filter client-side for multi-value matches
         results = self.collection.query(
             query_texts=[query_text],
-            n_results=n_results,
-            where=where
+            n_results=n_results * 3 # Fetch more to account for post-filtering
         )
-        return results
+        
+        filtered_docs = []
+        filtered_ids = []
+        filtered_metadatas = []
+        filtered_distances = []
+
+        for i, meta in enumerate(results['metadatas'][0]):
+            j_match = True if not jurisdiction else jurisdiction in [j.strip() for j in meta.get("jurisdiction", "").split(",")]
+            d_match = True if not domain else domain in [d.strip() for d in meta.get("domain", "").split(",")]
+            
+            if j_match and d_match:
+                filtered_docs.append(results['documents'][0][i])
+                filtered_ids.append(results['ids'][0][i])
+                filtered_metadatas.append(meta)
+                if results.get('distances') and results['distances'][0]:
+                    filtered_distances.append(results['distances'][0][i])
+                if len(filtered_docs) >= n_results:
+                    break
+
+        return {
+            "documents": [filtered_docs],
+            "ids": [filtered_ids],
+            "metadatas": [filtered_metadatas],
+            "distances": [filtered_distances] if results.get('distances') else None
+        }
 
     def get_status(self):
         count = self.collection.count()
+        # Retrieve all metadata to list documents
+        results = self.collection.get(include=["metadatas"])
+        docs = {}
+        if results['metadatas']:
+            for meta in results['metadatas']:
+                source = meta.get("source", "unknown")
+                if source not in docs:
+                    docs[source] = {
+                        "jurisdiction": meta.get("jurisdiction", ""),
+                        "domain": meta.get("domain", "")
+                    }
         return {
             "document_count": count,
             "db_path": self.db_path,
-            "model_path": self.model_path
+            "model_path": self.model_path,
+            "documents": docs
         }
 
 if __name__ == "__main__":
@@ -115,6 +143,10 @@ if __name__ == "__main__":
         status = fcc_db.get_status()
         print(f"Documents in DB: {status['document_count']}")
         print(f"Data Location: {status['db_path']}")
+        if status['documents']:
+            print("\nDocuments:")
+            for name, meta in status['documents'].items():
+                print(f" - {name} | Jurisdictions: {meta['jurisdiction']} | Domains: {meta['domain']}")
     
     if args.query:
         results = fcc_db.query(args.query, args.jurisdiction, args.domain, args.n_results)
