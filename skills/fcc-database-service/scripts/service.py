@@ -38,7 +38,7 @@ class FCCDatabase:
         )
 
     def ingest_file(self, file_path: Path, jurisdiction: str, domain: str, language: str):
-        print(f"Ingesting: {file_path.name}...")
+        print(f"Ingesting: {file_path.name}[domain: {domain}, jurisdiction: {jurisdiction}, lang: {language}]...")
         text = ""
         if file_path.suffix.lower() == ".pdf":
             with open(file_path, "rb") as f:

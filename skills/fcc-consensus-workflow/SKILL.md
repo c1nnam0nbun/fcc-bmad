@@ -7,60 +7,37 @@ description: Orchestrates multi-agent compliance reviews using the Consensus Mee
 
 ## Overview
 
-This skill implements the "Consensus Meeting" pattern for the Fintech Crypto Compliance (FCC) module. It orchestrates a three-phase analysis where multiple expert agents (KYC, Sanctions, etc.) perform individual RAG-based analysis, engage in cross-talk via shared memory, and produce a synthesized, high-quality Compliance Report.
+I orchestrate a consensus-based compliance review for the Fintech Crypto Compliance (FCC) module. My purpose is to synthesize specialized analysis from multiple expert agents into a definitive, evidence-backed Compliance Report for a specific `{client_id}`.
 
-## Activation
+## Mission
 
-### Step 1: Resolve Configuration
-Load module configuration from `{project-root}/_bmad/config.yaml` and `{project-root}/_bmad/config.user.yaml` (root and `fcc` section).
-Key paths:
-- `fcc_memory_root`: `{project-root}/_bmad/memory/fcc/`
-- `fcc_daily_logs`: `{fcc_memory_root}daily/`
-- `fcc_client_profiles`: `{fcc_memory_root}clients/`
+Deliver a high-quality Compliance Consensus Report for the requested `{client_id}`. You must ensure that all agent assessments are cross-referenced, evidence-based, and that the final decision resolves any cross-domain conflicts.
 
-### Step 2: Set Context
-1. **Extract `client_id`**: From the trigger command (e.g., `/fcc-consensus review client_123` -> `client_123`).
-2. **Filter Agents (Optional)**: If the command includes an `--agents` flag (e.g., `--agents kyc,mica`), restrict Phase 1 and 2 to only those specific agents. If no flag is provided, default to all installed expert agents in the `fcc` namespace.
+## Operational Context
 
-## Phase 1: Individual Analysis
+- **Expert Suite**: You have access to the FCC expert agent suite (KYC, Sanctions, etc.).
+- **Memory Backbone**: Leverage `{project-root}/_bmad/memory/fcc/` to store and retrieve agent findings.
+    - `daily/`: Current analysis logs.
+    - `clients/`: Persistent client profiles and audit trails.
+- **RAG Backbone**: Use `fcc-database-service` for all regulatory research and citations.
+- **Configuration**: Always check `{project-root}/_bmad/config.user.toml` for deployment-specific overrides (database URLs, etc.).
 
-In this phase, the selected expert agents are invoked sequentially to perform their specialized domain analysis.
+## Desired Outcomes
 
-1.  **Iterate through Target Agents**:
-    - For each agent (e.g., `fcc-agent-kyc`, `fcc-agent-mica`):
-        - **Action**: Perform domain-specific risk assessment for `{client_id}`.
-        - **Memory**: Agent must write findings to `{fcc_daily_logs}{date}.md` and update `{fcc_client_profiles}{client_id}.md`.
-        - **Requirement**: Must include citations to source regulatory documents from the `fcc-database-service`.
+1. **Holistic Assessment**: Individual expert assessments must be refined through agent collaboration to ensure holistic compliance coverage.
+2. **Evidence-Backed**: Every risk finding and synthesis point must be cited back to the `fcc-database-service` RAG results.
+3. **Auditability**: Maintain a clear audit trail of the synthesis and consensus process in the `{fcc_client_profiles}{client_id}.md` file.
+4. **Actionable Report**: Generate a final compliance decision (Clear/Review/Escalate) with supporting rationale.
 
-## Phase 2: Cross-Talk & Refinement
+## Workflow Execution
 
-Once individual assessments are logged, agents are re-engaged to ensure awareness of cross-domain findings.
+Upon activation:
 
-1.  **Shared Memory Review**:
-    - Each agent reads the latest entries in `{fcc_daily_logs}{date}.md` related to `{client_id}`.
-    - If a finding from another agent (e.g., Sanctions) impacts their own domain (e.g., KYC risk level), the agent must update their assessment in the shared memory.
-
-## Phase 3: Synthesis & Reporting
-
-1.  **Synthesize Findings**:
-    - Collect all distilled findings from `{fcc_client_profiles}{client_id}.md` and the daily log.
-    - Resolve any conflicts between agent opinions based on evidence weight and regulatory hierarchy.
-
-2.  **Generate Compliance Report**:
-    - Produce a structured HTML report as defined in `{skill-root}/assets/report-template.html`.
-    - **Report Elements**:
-        - Summary Risk Level (Green/Yellow/Red).
-        - Executive Summary of the Consensus decision.
-        - Agent-specific findings with citation links.
-        - Audit trail of the cross-talk phase.
-
-## Tools & Scripts
-
-- `scripts/generate_report.py`: Aggregates memory data into the final HTML report.
-- `fcc-database-service`: Used by individual agents for RAG retrieval.
+1. **Discovery**: Identify necessary expert agents to perform the review (use all experts if no `--agents` flag is provided).
+2. **Reasoning**: Coordinate agents to perform analysis, ensure their findings are cross-verified within the FCC shared memory, and reach a consensus.
+3. **Reporting**: Finalize the analysis by synthesizing all agent inputs into an evidence-based report.
 
 ## Conventions
 
-- Shared Memory Root: `{project-root}/_bmad/memory/fcc/`
-- All timestamps must follow ISO-8601.
-- Agent tags in logs: `[AGENT_NAME] Finding...`
+- All findings must be logged using ISO-8601 timestamps.
+- All report outputs must be based on the template at `{skill-root}/assets/report-template.html`.
