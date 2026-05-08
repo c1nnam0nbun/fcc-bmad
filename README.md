@@ -65,9 +65,61 @@ python skills/fcc-database-service/scripts/service.py --ingest "./docs/my_regs/"
 
 All agents have access to `fcc-database-service` skill, so you may also ask specific agent to ingest the documents.
 
-The documents can be tagged with **jurisdiction** (EU, Global, Singapore etc.) and **domain** (KYC, EDD, AML etc.). Multiple of them may be attached, separated by comma. Default values are **Global** for jurisdiction and **General** for domain. When querying, the agents may apply jurisdiction and domain filters as per user's request or their own reasoning.
+### FCC Database Service Deep Dive
 
-Ingestion may take some time, depending on the size of the documents, you've been warned.
+The `fcc-database-service` is the RAG (Retrieval-Augmented Generation) engine of the suite. It uses a local ChromaDB instance and `all-MiniLM-L6-v2` embeddings.
+
+#### Supported Formats
+- **PDF** (text-based)
+- **DOCX**
+- **Markdown** (.md)
+- **Text** (.txt)
+
+#### Commands & Usage
+
+The service can be controlled via the `/fcc-database-service` skill or directly via Python:
+
+**1. Ingesting Documents**
+Ingest a single file or an entire directory.
+```bash
+python skills/fcc-database-service/scripts/service.py --ingest "./path/to/docs" --jurisdiction "EU" --domain "KYC, AML" --language "English"
+```
+
+**2. Querying**
+Search the database with optional metadata filtering.
+```bash
+python skills/fcc-database-service/scripts/service.py --query "What are the KYC requirements for crypto exchanges?" --jurisdiction "EU" --domain "KYC"
+```
+
+**3. Updating Metadata**
+Add or remove jurisdiction and domain tags from already ingested documents. This is useful for refining document categorization without re-ingesting.
+- **Add tags:**
+  ```bash
+  python skills/fcc-database-service/scripts/service.py --update "regulation_v1.pdf" --domain "Sanctions" --action add
+  ```
+- **Remove tags:**
+  ```bash
+  python skills/fcc-database-service/scripts/service.py --update "regulation_v1.pdf" --jurisdiction "Global" --action remove
+  ```
+
+**4. Checking Status**
+View the total number of chunks and a list of all ingested documents with their current tags.
+```bash
+python skills/fcc-database-service/scripts/service.py --status
+```
+
+**5. Resetting the Database**
+Clear the entire collection (use with caution).
+```bash
+python skills/fcc-database-service/scripts/service.py --reset
+```
+
+#### Metadata Handling
+The documents can be tagged with **jurisdiction** (EU, Global, Singapore etc.) and **domain** (KYC, EDD, AML etc.). Multiple values can be provided as a comma-separated string.
+- **Default Jurisdiction:** `Global`
+- **Default Domain:** `General`
+
+When querying, filters use an "includes" logic: if a document has tags "KYC, AML", it will match a query filtered for "KYC".
 
 ## Architecture
 The module uses a **Shared Backbone** pattern:

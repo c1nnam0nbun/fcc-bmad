@@ -77,6 +77,46 @@ class FCCDatabase:
         )
         print(f"Success: Added {len(chunks)} chunks from {file_path.name}")
 
+    def update_metadata(self, source: str, jurisdiction: str = None, domain: str = None, action: str = "add"):
+        """Add or remove metadata tags from existing document chunks."""
+        results = self.collection.get(where={"source": source}, include=["metadatas"])
+        if not results['ids']:
+            print(f"No document found with source: {source}")
+            return False
+
+        ids = results['ids']
+        metadatas = results['metadatas']
+        new_metadatas = []
+
+        for meta in metadatas:
+            current_jurisdictions = [j.strip() for j in meta.get("jurisdiction", "").split(",") if j.strip()]
+            current_domains = [d.strip() for d in meta.get("domain", "").split(",") if d.strip()]
+
+            if jurisdiction:
+                tags = [t.strip() for t in jurisdiction.split(",") if t.strip()]
+                for t in tags:
+                    if action == "add" and t not in current_jurisdictions:
+                        current_jurisdictions.append(t)
+                    elif action == "remove" and t in current_jurisdictions:
+                        current_jurisdictions.remove(t)
+            
+            if domain:
+                tags = [t.strip() for t in domain.split(",") if t.strip()]
+                for t in tags:
+                    if action == "add" and t not in current_domains:
+                        current_domains.append(t)
+                    elif action == "remove" and t in current_domains:
+                        current_domains.remove(t)
+            
+            meta["jurisdiction"] = ", ".join(current_jurisdictions)
+            meta["domain"] = ", ".join(current_domains)
+            new_metadatas.append(meta)
+
+        self.collection.update(ids=ids, metadatas=new_metadatas)
+        msg_action = "added" if action == "add" else "removed"
+        print(f"Successfully {msg_action} metadata for {source}")
+        return True
+
     def query(self, query_text: str, jurisdiction: str = None, domain: str = None, n_results: int = 5):
         # We query the DB and then filter client-side for multi-value matches
         results = self.collection.query(

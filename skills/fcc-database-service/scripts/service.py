@@ -8,6 +8,8 @@ if __name__ == "__main__":
     parser.add_argument("--query", type=str, help="Query text to search in DB")
     parser.add_argument("--n_results", type=int, default=5, help="Number of results to return")
     parser.add_argument("--ingest", type=str, help="Path to file or folder to ingest")
+    parser.add_argument("--update", type=str, help="Source name of document to update metadata")
+    parser.add_argument("--action", type=str, choices=["add", "remove"], default="add", help="Action for metadata update")
     parser.add_argument("--jurisdiction", type=str, help="Jurisdiction tag")
     parser.add_argument("--domain", type=str, help="Domain tag (e.g., KYC, AML)")
     parser.add_argument("--language", type=str, help="Document language")
@@ -53,6 +55,9 @@ if __name__ == "__main__":
         else:
             print("No results found.")
     
+    if args.update:
+        fcc_db.update_metadata(args.update, args.jurisdiction, args.domain, args.action)
+
     if args.ingest:
         path = Path(args.ingest)
         if path.is_file():
