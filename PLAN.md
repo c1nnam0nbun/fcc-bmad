@@ -16,7 +16,6 @@ The FCC module provides a self-contained environment for automated compliance au
 ## Components
 - **`fcc-database-service`**: Internal Vector DB and ingestion.
 - **`fcc-agent-architect`**: Meta-agent for adding new experts.
-- **`fcc-agent-kyc`**: Specialist for KYC/CDD.
 - **`fcc-consensus-workflow`**: Multi-agent orchestrator.
 
 ## Installation
