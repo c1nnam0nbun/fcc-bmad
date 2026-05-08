@@ -37,7 +37,7 @@ Alternatively, you may use non-interactive mode
       --tools <tool_names> \
       --yes
    ```
-   Substitute `tool_names` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
+   Substitute `<tool_names>` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
 2. Once installed, run `/fcc-setup`
 
 ## Usage
