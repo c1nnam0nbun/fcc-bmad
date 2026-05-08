@@ -30,7 +30,7 @@
         "./skills/fcc-database-service",
         "./skills/fcc-agent-architect",
         "./skills/fcc-agent-kyc",
-        "./skills/fcc-consensus-workflow",
+        "./skills/fcc-consensus",
         "./skills/fcc-setup"
       ]
     }
