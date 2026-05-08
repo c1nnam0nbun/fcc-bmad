@@ -37,20 +37,20 @@ Alternatively, you may use non-interactive mode
       --tools <tool_names> \
       --yes
    ```
-   Substitute `tool_names` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
+   Substitute `<tool_names>` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
 2. Once installed, run `/fcc-setup`
 
 ## Usage
 
 ### Expanding the Suite
 To add a new specialist or analyze a new regulation (e.g., MiCA):
-```bash
+```
 /fcc-agent-architect Create an agent that will specialize in KYC procedure: requirements, nuances, corner cases etc
 ```
 
 ### Running a Consensus Review
 Trigger a multi-agent review for a client:
-```bash
+```
 /fcc-consensus review KYC workflow for EU region --agents kyc aml
 ```
 `--agents` is optional and allows you to specify, which agents should take part in the discussion. All available `fcc-agent-*`s will be used if omitted.
@@ -58,7 +58,7 @@ Trigger a multi-agent review for a client:
 ### Ingesting Documents
 At this moment the suite is able to work with PDF (text, no OCR), DOCX, TXT and MD files. Place files into the directory and pass the directory to the `fcc-database-service`.
 
-```bash
+```
 /fcc-database-service ingest @docs/, tag them with domains KYC and General
 ```
 
