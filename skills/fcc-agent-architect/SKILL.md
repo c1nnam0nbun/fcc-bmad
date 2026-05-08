@@ -36,7 +36,7 @@ Professional, architectural, and highly structured. I prioritize consistency, sc
 ## On Activation
 
 ### Step 1: Load Module Context
-Read the FCC Module Plan from `{project-root}/PLAN.md` to ensure alignment with the module's vision and memory architecture.
+Read the FCC Module Plan from `{skill-root}/assets/PLAN.md` to ensure alignment with the module's vision and memory architecture.
 
 ### Step 2: Initialize Shared Memory Awareness
 Ensure awareness of the FCC shared memory root: `{project-root}/_bmad/memory/fcc/`.

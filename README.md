@@ -6,68 +6,53 @@ A self-contained, expert-agent suite for AML/CTF and regulatory decision-making 
 - **Self-Contained RAG:** Local ChromaDB and Sentence-Transformers embedded within the module.
 - **Expert Agents:** 
     - `fcc-agent-kyc`: Meticulous auditor for KYC/CDD procedures.
-    - `fcc-agent-architect`: Meta-agent to scaffold new specialists.
-- **Consensus Workflow:** Orchestrates multi-agent "Consensus Meetings" with structured audit trails.
-- **Project-Agnostic:** Designed to be installed in any BMad-enabled workspace.
+    - `fcc-agent-architect`: Meta-agent to identify gaps and build new specialists.
+- **Consensus Workflow:** Orchestrates multi-agent reviews with structured audit trails.
+- **Zero-Touch Setup:** One command to install dependencies and initialize the suite.
 
-## Installation
+## Installation & Setup
 
-### 1. Prerequisites
-Ensure you have Python 3.9+ installed and BMad CLI configured in your project.
+Everything is handled through the BMad CLI. Simply run:
 
-### 2. Install Dependencies
-Navigate to the module directory and install the required Python packages:
 ```bash
-pip install -r requirements.txt
-```
-
-### 3. Initialize the Module
-Run the unified setup skill to discover and initialize the database and all agents:
-```bash
-# In BMad CLI:
 /fcc-setup
 ```
-*Alternatively, run the setup script directly:*
-```bash
-python skills/fcc-setup/scripts/setup.py
-```
+
+This command will:
+1.  **Install Dependencies:** Automatically install all required Python packages (`chromadb`, `sentence-transformers`, etc.).
+2.  **Initialize Database:** Set up the local Vector DB and shared memory structures.
+3.  **Configure Agents:** Ensure all agents are aware of the shared backbone.
 
 ## Usage
 
-### Ingesting Documents
-Ingest regulatory PDFs or Word docs with jurisdictional metadata:
+### Expanding the Suite
+To add a new specialist or analyze a new regulation (e.g., MiCA):
 ```bash
-python skills/fcc-database-service/scripts/service.py --ingest "./docs/my_regs/" --jurisdiction "Bulgaria" --domain "KYC"
+/fcc-agent-architect Create an agent that will specialize in KYC procedure: requirements, nuances, corner cases etc
 ```
 
 ### Running a Consensus Review
 Trigger a multi-agent review for a client:
 ```bash
-# In BMad CLI:
-/fcc-consensus review client_id_123 --agents kyc
+/fcc-consensus review KYC workflow for EU region --agents kyc aml
+```
+`--agents` is optional and allows you to specify, which agents should take part in the discussion. All available `fcc-agent-*`s will be used if omitted.
+
+### Ingesting Documents
+```bash
+/fcc-database-service ingest @docs/, tag them with domains KYC and General
 ```
 
-## Migration: Moving to an Externally Hosted Database
+You may also use script directly
 
-The FCC module is designed for portability. To move from a local bundled database to a remote server (e.g., a central Qdrant or Chroma server):
+```bash
+python skills/fcc-database-service/scripts/service.py --ingest "./docs/my_regs/" --jurisdiction "Global" --domain "KYC, General"
+```
 
-1. **Update Configuration:**
-   Modify your `{project-root}/_bmad/config.user.toml` to override the internal database URL:
-   ```toml
-   [modules.fcc]
-   vector_db_url = "http://your-remote-db-server:8000"
-   use_local_db = false
-   ```
+All agents have access to `fcc-database-service` skill, so you may also ask specific agent to ingest the documents.
 
-2. **Update Database Service:**
-   Modify `skills/fcc-database-service/scripts/service.py` to use `chromadb.HttpClient` instead of `PersistentClient` when `use_local_db` is false.
-
-3. **Update Agent Tools:**
-   Ensure the environment variable `FCC_VDB_URL` is set in your deployment environment. The agents are designed to check this variable before falling back to the local path.
-
-## Project Structure
-- `skills/fcc-database-service`: The RAG backbone.
-- `skills/fcc-agent-architect`: The meta-agent for suite expansion.
-- `skills/fcc-agent-kyc`: The KYC specialist.
-- `skills/fcc-consensus-workflow`: The orchestrator.
-- `_bmad/memory/fcc/`: Shared memory root (Daily logs, Client profiles, Internal storage).
+## Architecture
+The module uses a **Shared Backbone** pattern:
+- **`fcc-database-service`**: The central RAG engine.
+- **`fcc-agent-architect`**: The meta-agent (assets/PLAN.md contains the roadmap).
+- **`_bmad/memory/fcc/`**: Shared daily logs and client state.

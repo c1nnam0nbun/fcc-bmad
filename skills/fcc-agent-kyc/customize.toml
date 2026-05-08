@@ -1,0 +1,6 @@
+[agent]
+code = "fcc-agent-kyc"
+title = "KYC Specialist"
+icon = "🔍"
+description = "Specialist in Know Your Customer (KYC) procedures, regulatory requirements, and corner-case analysis for crypto compliance."
+agent_type = "stateless"
