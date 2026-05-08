@@ -30,12 +30,7 @@ Alternatively, you may use non-interactive mode
    ```bash
    mkdir your_project
    cd your_project
-   npx bmad-method@latest install \
-      --directory . \
-      --modules bmm,bmb \
-      --custom-source https://github.com/c1nnam0nbun/fcc-bmad \
-      --tools <tool_names> \
-      --yes
+   npx bmad-method@latest install --directory . --modules bmm,bmb --custom-source https://github.com/c1nnam0nbun/fcc-bmad --tools <tool_names> --yes
    ```
    Substitute `<tool_names>` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
 2. Once installed, run `/fcc-setup`
@@ -71,6 +66,8 @@ python skills/fcc-database-service/scripts/service.py --ingest "./docs/my_regs/"
 All agents have access to `fcc-database-service` skill, so you may also ask specific agent to ingest the documents.
 
 The documents can be tagged with **jurisdiction** (EU, Global, Singapore etc.) and **domain** (KYC, EDD, AML etc.). Multiple of them may be attached, separated by comma. Default values are **Global** for jurisdiction and **General** for domain. When querying, the agents may apply jurisdiction and domain filters as per user's request or their own reasoning.
+
+Ingestion may take some time, depending on the size of the documents, you've been warned.
 
 ## Architecture
 The module uses a **Shared Backbone** pattern:

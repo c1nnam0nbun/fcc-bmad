@@ -49,8 +49,18 @@ class FCCDatabase:
             print(f"Unsupported file type: {file_path.suffix}")
             return
 
-        # Simple chunking by paragraph/lines for now
-        chunks = [c.strip() for c in text.split("\n\n") if len(c.strip()) > 50]
+        # Granular chunking: 1000 chars with 200 char overlap
+        chunk_size = 1000
+        overlap = 200
+        chunks = []
+        
+        start = 0
+        while start < len(text):
+            end = start + chunk_size
+            chunk = text[start:end].strip()
+            if len(chunk) > 50:
+                chunks.append(chunk)
+            start += (chunk_size - overlap)
         
         ids = [f"{file_path.name}_{i}" for i in range(len(chunks))]
         metadatas = [{
@@ -73,6 +83,7 @@ class FCCDatabase:
             query_texts=[query_text],
             n_results=n_results * 3 # Fetch more to account for post-filtering
         )
+        print(results)
         
         filtered_docs = []
         filtered_ids = []
@@ -82,6 +93,8 @@ class FCCDatabase:
         for i, meta in enumerate(results['metadatas'][0]):
             j_match = True if not jurisdiction else jurisdiction in [j.strip() for j in meta.get("jurisdiction", "").split(",")]
             d_match = True if not domain else domain in [d.strip() for d in meta.get("domain", "").split(",")]
+            
+            print(jurisdiction, j_match, domain, d_match)
             
             if j_match and d_match:
                 filtered_docs.append(results['documents'][0][i])
