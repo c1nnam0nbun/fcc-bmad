@@ -1,6 +1,6 @@
 ---
 name: fcc-consensus
-description: Orchestrates multi-agent compliance reviews for corporate regulatory decisions"
+description: Orchestrates multi-agent compliance reviews for corporate regulatory decisions. Trigger: "/fcc-consensus <task_description>"
 ---
 
 # FCC Consensus Workflow
