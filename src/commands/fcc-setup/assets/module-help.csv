@@ -1,6 +1,6 @@
 skill,display-name,menu-code,phase,action,required,before,after,args,outputs,module,description,output-location
 fcc-agent-kyc,KYC Compliance Specialist,kyc,analysis,fcc-kyc,true,,,,,fcc,Specialist for KYC/CDD assessments.,
 fcc-agent-architect,FCC Agent Architect,arch,analysis,fcc-architect,true,,,,,fcc,Architect for FCC suite expansion.,
-fcc-consensus-workflow,Consensus Review,cons,analysis,fcc-consensus,true,,,,,fcc,Orchestrator for multi-agent audits.,
+fcc-consensus,Consensus Review,cons,analysis,fcc-consensus,true,,,,,fcc,Orchestrator for multi-agent audits.,
 fcc-database-service,FCC Database Service,db,setup,fcc-db,true,,,,,fcc,Manages RAG backbone and ingestion.,
 fcc-setup,FCC Setup,setup,setup,fcc-setup,true,,,,,fcc,Unified module initialization.,
