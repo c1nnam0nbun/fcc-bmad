@@ -40,4 +40,5 @@ Upon activation:
 ## Conventions
 
 - All findings must be logged using ISO-8601 timestamps.
-- All report outputs must be based on the template at `{skill-root}/assets/report-template.html`.
+- All report outputs must be generated as a Markdown file (.md) following the structure in `{skill-root}/references/consensus-logic.md`.
+- Reports must be saved to `{project-root}/_bmad/output/consensus/`.
