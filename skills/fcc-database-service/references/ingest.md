@@ -2,11 +2,15 @@
 
 To ingest new regulatory documents into the internal FCC database:
 
-1. **Prepare Documents:** Place PDF or Word files in a local folder.
-2. **Execute Ingestion:** Run the following command via `run_shell_command`:
+1. **Prepare Documents:** Place PDF, DOCX, MD, or TXT files in a local folder.
+2. **Execute Ingestion:**
    ```powershell
-   python {skill-root}/scripts/service.py --ingest "[path_to_docs]" --jurisdiction "[EU/US/SG]" --domain "[KYC/AML/Sanctions]"
+   python {skill-root}/scripts/service.py --ingest "[path_to_file_or_folder]" --jurisdiction "[tag]" --domain "[tag]" --language "[lang]"
    ```
-3. **Verification:** The script will output the number of chunks added.
+3. **Parameters:**
+   - `--ingest`: Path to a specific file or a directory.
+   - `--jurisdiction`: (Default: "Global") Comma-separated tags.
+   - `--domain`: (Default: "General") Comma-separated tags.
+   - `--language`: (Default: "English").
 
-Note: Metadata (jurisdiction, domain) is critical for agents to filter correctly.
+4. **Verification:** The script outputs the number of chunks added. Chunks are ~1000 characters with 200 character overlap.

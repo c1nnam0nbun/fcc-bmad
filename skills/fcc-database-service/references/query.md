@@ -1,16 +1,16 @@
-# Query Database Capability
+# Query Capability
 
-This capability is used primarily by expert agents to retrieve evidence.
+To search for regulatory information in the FCC database:
 
-**Internal Logic:**
-Agents use the `FCCDatabase` class in `scripts/service.py` or call it via shell to perform filtered searches.
+1. **Parameters:**
+   - `query`: The search string.
+   - `jurisdiction` (Optional): Filter results by jurisdiction (e.g., "EU").
+   - `domain` (Optional): Filter results by domain (e.g., "KYC").
+   - `n_results` (Optional): Number of results to return (default: 5).
 
-**Filtering Rules:**
-- `jurisdiction`: Only return documents matching the target country/region.
-- `domain`: Only return documents matching the agent's expertise (e.g., KYC).
+2. **Execute Query:**
+   ```powershell
+   python {skill-root}/scripts/service.py --query "[your_question]" --jurisdiction "[filter]" --domain "[filter]"
+   ```
 
-**Example Shell Query:**
-```powershell
-# (This is a conceptual example for testing)
-python {skill-root}/scripts/service.py --query "What are the KYC requirements for crypto in Singapore?" --jurisdiction "Singapore" --domain "KYC"
-```
+3. **Output:** The script returns the most relevant document chunks along with their source metadata.

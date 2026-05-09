@@ -13,11 +13,12 @@ I am the central data authority for the Fintech Crypto Compliance (FCC) module. 
 
 ## Capabilities
 
-| Capability         | Route                        |
-| ------------------ | ---------------------------- |
-| Ingest Documents   | Load `./references/ingest.md`  |
-| Query Database     | Load `./references/query.md`   |
-| Service Status     | Load `./references/status.md`  |
+| Capability         | Route                                |
+| ------------------ | ------------------------------------ |
+| Ingest Documents   | Load `./references/ingest.md`          |
+| Query Database     | Load `./references/query.md`           |
+| Update Metadata    | Load `./references/metadata-update.md` |
+| Service Status     | Load `./references/status.md`          |
 
 ## Conventions
 
