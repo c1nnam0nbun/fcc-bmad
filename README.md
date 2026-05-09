@@ -35,7 +35,7 @@ Alternatively, you may use non-interactive mode
    Substitute `<tool_names>` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
 2. Once installed, run `/fcc-setup`
 
-`/fcc-setup` command will create necessary folder structure, initialize database, and **run all setup.py scripts in every fcc-* skill**.
+`/fcc-setup` command will create necessary folder structure, initialize database, and **run all setup.py scripts in every fcc-\* skill**.
 
 ## Usage
 
