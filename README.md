@@ -35,6 +35,8 @@ Alternatively, you may use non-interactive mode
    Substitute `<tool_names>` for your tools (gemini, claude-code etc.). List all available tools with `npx bmad-method@latest install --list-tools`
 2. Once installed, run `/fcc-setup`
 
+`/fcc-setup` command will create necessary folder structure, initialize database, and **run all setup.py scripts in every fcc-* skill**.
+
 ## Usage
 
 ### Expanding the Suite
@@ -68,9 +70,3 @@ All agents have access to `fcc-database-service` skill, so you may also ask spec
 The documents can be tagged with **jurisdiction** (EU, Global, Singapore etc.) and **domain** (KYC, EDD, AML etc.). Multiple of them may be attached, separated by comma. Default values are **Global** for jurisdiction and **General** for domain. When querying, the agents may apply jurisdiction and domain filters as per user's request or their own reasoning.
 
 Ingestion may take some time, depending on the size of the documents, you've been warned.
-
-## Architecture
-The module uses a **Shared Backbone** pattern:
-- **`fcc-database-service`**: The central RAG engine.
-- **`fcc-agent-architect`**: The meta-agent (assets/PLAN.md contains the roadmap).
-- **`_bmad/memory/fcc/`**: Shared daily logs and client state.
